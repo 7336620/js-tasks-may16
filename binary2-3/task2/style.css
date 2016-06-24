@@ -1,0 +1,11 @@
+p { 
+  margin:10px; 
+  border-bottom:1px dotted #369; 
+} 
+em { 
+  color:#00f; 
+  font-weight:bold; 
+} 
+form { width:450px;  } 
+input { margin-left:5px; } 
+label { float:right; } 
