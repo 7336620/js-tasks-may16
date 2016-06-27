@@ -7,5 +7,37 @@ em {
   font-weight:bold; 
 } 
 form { width:450px;  } 
+/*
 input { margin-left:5px; } 
-label { float:right; } 
+label { float:right; }  
+*/
+body
+{
+    font-family: Arial, sans-serif;
+} 
+
+.inputWrapper
+{
+    margin: auto;
+    width: 450px;
+}
+
+.itemText
+{
+    width: 400px;
+    outline: none;
+    border: solid 1px Silver;
+    height: 16px;
+    line-height: 16px;
+    padding: 1px;
+    margin: 0;
+    padding-right: 20px;
+}
+.xButton
+{
+	display: none;
+    width: 11px;
+    height: 11px;
+    margin-left: -10px;
+    cursor: pointer;
+}

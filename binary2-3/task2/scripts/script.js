@@ -10,7 +10,34 @@ var Application = {};
 		var currentID  = 'itemID' + indexID;
 		var labelID    = 'lablID'+ indexID;
 		console.log( "adding " + _currentItem  + "id=" + currentID);
-		$("#result").append("<input type='checkbox' class = 'itemList' id="+currentID+" /><label id="+labelID+" >"+_currentItem+"</label> <br />");
+		$("#result").append("<div class = 'inputWrapper'> <input type='checkbox' class = 'itemList' id="+currentID+" /> <br /> </div>");
+		$("#"+currentID).after("<input type='text' class = 'itemText' id="+labelID+" value='"+_currentItem+"' readonly='true' />");
+		$("#"+labelID).dblclick(function() { 
+			console.log("dblclck .. edit: " +$(this).val() + " id= " + $(this).attr('id'));
+			var currentItem = $(this).val();
+			var labelID = $(this).attr('id');
+			$(this).replaceWith("<input type='text' class = 'itemText' id="+labelID+" value='"+currentItem+"' />");
+			$(this).focus();
+			$(this).replaceWith("<input type='text' class = 'itemText' id="+labelID+" value='"+currentItem+"' readonly='true' />");
+		});	
+	
+		$("#"+labelID).after($('<input type="image" class="xButton" src="images/x.gif" />')
+			.css({ 'display': 'none', 'cursor': 'pointer', 'marginLeft': '-20px' }));
+		/* in this place mouseup and click does not work always. And click does not work .*/
+		($("#"+labelID).next()).on("mouseup", function() { //вешаем обработчик на клик
+						console.log(" must be xButton to Delete click...: ");
+						$(this).parent().remove();
+                });
+				
+        $("#"+labelID).mouseenter(function() {  
+			// console.log("mouseenter - TODO change to hover...: " +$(this).text());
+			$(this).next().show();
+        });
+		$("#"+labelID).mouseleave(function() { 
+			// console.log("mouseleave - TODO change to hover...: " +$(this).text());
+			$(this).next().hide();
+        });
+		
 		$("#"+currentID).click(function() { 
 			var isCheck = $(this).prop('checked');
 			console.log(" checkbox press... " + isCheck );
@@ -22,20 +49,8 @@ var Application = {};
 				$(this).next().fadeTo("slow",1); 				
 			}
 		});
-		$("#"+currentID).next().dblclick(function() { 
-			console.log("dblclck .. edit: " +$(this).text() + " id= " + $(this).attr('id'));
-			var currentItem = $(this).text();
-			var labelID = $(this).attr('id');
-/*
-			$(this).replaceWith( "<input type='text' id='"+labelID+ "' value='"+currentItem+"' >");
-			$("#"+labelID).change(function(){
-				console.log(" change press... "  );
-				// $(this).replaceWith( "<label id="+labelID+" >"+currentItem+"</label>");			
-			});	*/
-		});
-		$("#"+currentID).next().mouseenter(function() { 
-			console.log("mouseenter - TODO change to hover...: " +$(this).text());
-		});
+
+
 	});
 	
 	$("#addButton").click(function() { 
@@ -43,18 +58,14 @@ var Application = {};
 	}); 
 	
 	$("#deleteButton").click(function() { 
-		var currentID = 'itemID'+($(".itemList").length-1);
-		console.log("deleting..." + currentID );
-		$("#"+currentID).next().remove(); 
-		$("#"+currentID).next().remove(); 
-		$("#"+currentID).remove(); 
+		console.log("deleting LAST..."  );
+		$(".inputWrapper").last().remove();
 	}); 
 
 	$("#deleteSelectedButton").click(function() { 
 		var indexID = Application.lastID(); 
 		var isCheck, currentID ;
 		
-
 		console.log(" deleting all selected from "+ indexID );
 		while( indexID-- > 0){
 			currentID = 'itemID'+indexID;
@@ -62,9 +73,7 @@ var Application = {};
 			console.log(" itemID "+ currentID + " isCheck " + isCheck );
 			if (isCheck){
 				console.log(" deleting " + $("#"+currentID).next().val() );
-				$("#"+currentID).next().remove(); 
-				$("#"+currentID).next().remove(); 
-				$("#"+currentID).remove(); 
+				$("#"+currentID).parent().remove();
 			}
 		}
 	}); 
